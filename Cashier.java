@@ -9,6 +9,7 @@ public class Cashier implements Runnable {
 
     @Override
     public void run() {
+        msg("is running");
 
     }
 

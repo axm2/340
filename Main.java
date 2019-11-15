@@ -9,13 +9,17 @@ public class Main {
     static Thread[] customerThreads;
     static Thread[] clerkThreads;
     static Thread[] cashierThreads;
+    static int customersServed;
 
     public static void main(String[] args) {
 
         // Set default arguments
+        //TODO: Change this so that we only support args for customers.
+        //TODO: Make sure the program runs total 40-90 seconds.
         totalCustomers = 12;
         totalClerks = 3;
         totalCashiers = 2;
+        customersServed = 0;
         // Replace defaults with command line arguments if they exist
         if (args.length > 0) {
             totalCustomers = Integer.parseInt(args[0]);
@@ -52,8 +56,5 @@ public class Main {
 
     }
 
-    public void msg(String m) {
-        System.out.println("[" + (System.currentTimeMillis() - time) + "] " + getName() + ": " + m);
-    }
 
 }

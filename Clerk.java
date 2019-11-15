@@ -7,13 +7,27 @@ public class Clerk implements Runnable {
 
     Clerk(int ID) {
         this.ID = ID;
+        queue = new ArrayDeque<Customer>();
     }
 
     @Override
     public void run() {
-        /* while(!queue.isEmpty()){
-            System.out.println("Shouldn't get here");
-        } */
+        msg("is running");
+        //TODO: This busy wait is broken, maybe instead of giving each clerk a queue we make one big one
+        while(!queue.isEmpty()){
+            msg("Serving a customer");
+            queue.pop();
+            Main.customersServed++;
+        }
+        if(Main.customersServed==Main.totalCustomers){
+            try{
+                msg("Waiting for closing time");
+                Thread.sleep(100);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -21,8 +35,9 @@ public class Clerk implements Runnable {
         System.out.println("[" + (System.currentTimeMillis() - time) + "] " + "Clerk-" + ID + ": " + m);
     }
 
-    public void serve(){
-        //check if queue not empty, if its not, pop (one or all?)
+
+    public void insert(Customer x){
+        queue.add(x);
     }
 
 
