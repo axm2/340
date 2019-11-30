@@ -1,44 +1,30 @@
-import java.util.ArrayDeque;
 
 public class Clerk implements Runnable {
     public int ID;
-    public ArrayDeque<Customer> queue;
-    public static long time = System.currentTimeMillis();
+    public static long time = System.currentTimeMillis(); // Maybe sync the time
 
     Clerk(int ID) {
         this.ID = ID;
-        queue = new ArrayDeque<Customer>();
     }
 
     @Override
     public void run() {
         msg("is running");
-        //TODO: This busy wait is broken, maybe instead of giving each clerk a queue we make one big one
-        while(!queue.isEmpty()){
-            msg("Serving a customer");
-            queue.pop();
-            Main.customersServed++;
+        // busy wait until customers arrive
+        // help the customers in a FCFS order ( one at a time )
+        // when we have helped all the customers, wait for closing time.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        if(Main.customersServed==Main.totalCustomers){
-            try{
-                msg("Waiting for closing time");
-                Thread.sleep(100);
-            }
-            catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
+        
 
     }
 
     public void msg(String m) {
         System.out.println("[" + (System.currentTimeMillis() - time) + "] " + "Clerk-" + ID + ": " + m);
     }
-
-
-    public void insert(Customer x){
-        queue.add(x);
-    }
-
 
 }

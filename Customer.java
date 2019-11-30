@@ -1,11 +1,9 @@
 public class Customer implements Runnable {
     public int ID;
-    public boolean isServed;
-    public static long time = System.currentTimeMillis();
+    public static long time = System.currentTimeMillis(); // Maybe sync the time
 
     Customer(int ID) {
         this.ID = ID;
-        isServed = false;
 
     }
 
@@ -23,21 +21,24 @@ public class Customer implements Runnable {
         Thread.yield();
 
         msg("is requesting a slip");
-        request();
-
+        // getSlip();
+        // After we got slip, go to cashier and pay
+        int prio = Thread.currentThread().getPriority();
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Thread.currentThread().setPriority(prio+1);
+        //When the customer is at the cashier, set prio to default value
+        Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+        //Customer decides cash or credit
+        //Flip a coin
+        
     }
 
     public void msg(String m) {
         System.out.println("[" + (System.currentTimeMillis() - time) + "] " + "Customer-" + ID + ": " + m);
     }
-
-    public void request() {
-        int randomClerkIndex = (int) (Math.random() * Main.totalClerks);
-        while (Main.clerks[randomClerkIndex] != null) {
-            //Make the customers busy wait. By inserting I don't think we're actually busy waiting
-            Main.clerks[randomClerkIndex].insert(this);
-            break;
-        }
-    }
-
 }
