@@ -13,17 +13,32 @@ public class Customer implements Runnable {
 
     @Override
     public void run() {
+        try {
+            Thread.sleep((long) (Math.random() * 50000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         msg("is looking for an item to buy");
         try {
-            Thread.sleep((long) (Math.random() * 100));
+            Thread.sleep((long) (Math.random() * 10000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         msg("is deciding whether or not to purchase");
         Thread.yield();
+        try {
+            Thread.sleep((long) (Math.random() * 10));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Thread.yield();
 
         msg("is requesting a slip");
+        try {
+            Thread.sleep((long) (Math.random() * 10000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         getSlip();
         // After we got slip, go to cashier and pay
         while (!hasSlip) {
@@ -38,6 +53,11 @@ public class Customer implements Runnable {
         }
         Thread.currentThread().setPriority(prio + 1);
         // When the customer is at the cashier, set prio to default value
+        try {
+            Thread.sleep((long) (Math.random() * 10000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         pay(Math.random() < 0.5); // Customer decides cash or credit
         msg("has paid");
         Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
@@ -50,7 +70,7 @@ public class Customer implements Runnable {
         try {
             if (ID != 0) {
                 Main.customerThreads[ID-1].join();
-                msg("Joining with "+ Integer.toString(ID-1));
+                msg("Joining with Customer-"+ Integer.toString(ID-1));
                 //Main.doneShopping.remove(0);//Doesn't matter which we remove I think.
                 msg("is leaving the store");
             }
@@ -96,9 +116,20 @@ public class Customer implements Runnable {
         if (n) {
             Main.waitPayCash.add(this);
             msg("has decided to pay with cash");
+            try {
+                Thread.sleep((long) (Math.random() * 10000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
         } else {
             Main.waitPayCredit.add(this);
             msg("has decided to pay with credit");
+            try {
+                Thread.sleep((long) (Math.random() * 10000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
